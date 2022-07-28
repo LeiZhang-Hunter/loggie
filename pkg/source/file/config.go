@@ -138,3 +138,7 @@ type MultiConfig struct {
 	MaxBytes int64         `yaml:"maxBytes,omitempty" default:"131072"` // default 128KB
 	Timeout  time.Duration `yaml:"timeout,omitempty" default:"5s"`      // default 2 * read.timeout
 }
+
+type SeqConfig struct {
+	Enable *bool
+}

@@ -37,18 +37,21 @@ const (
 type WatchTaskType string
 
 type WatchTask struct {
-	epoch            *pipeline.Epoch
-	pipelineName     string
-	sourceName       string
-	config           CollectConfig
-	eventPool        *event.Pool
-	productFunc      api.ProductFunc
-	activeChan       chan *Job
-	watchTaskType    WatchTaskType
-	countDown        *sync.WaitGroup
-	waiteForStopJobs map[string]*Job
-	stopTime         time.Time
-	sourceFields     map[string]interface{}
+	epoch               *pipeline.Epoch
+	pipelineName        string
+	sourceName          string
+	config              CollectConfig
+	eventPool           *event.Pool
+	productFunc         api.ProductFunc
+	activeChan          chan *Job
+	watchTaskType       WatchTaskType
+	countDown           *sync.WaitGroup
+	waiteForStopJobs    map[string]*Job
+	stopTime            time.Time
+	sourceFields        map[string]interface{}
+	onCreateClosureList []OnTaskClosure
+	onRenameClosureList []OnTaskClosure
+	onDeleteClosureList []OnTaskClosure
 }
 
 func NewWatchTask(epoch *pipeline.Epoch, pipelineName string, sourceName string, config CollectConfig,
@@ -88,6 +91,7 @@ func NewWatchTask(epoch *pipeline.Epoch, pipelineName string, sourceName string,
 			paths[i] = path + "*"
 		}
 	}
+	InitWatchTaskCallable(w)
 	return w
 }
 
